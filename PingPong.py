@@ -1,6 +1,4 @@
 from pygame import *
-from random import randint
-from time import time as timer
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
