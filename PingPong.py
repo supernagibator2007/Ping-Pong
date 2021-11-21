@@ -34,7 +34,9 @@ background = transform.scale(image.load('background.png'), (1100, 750))
 
 player1 = Player('pong.png', 0, 325, 200, 200, 15)
 player2 = Player('pong.png', 900, 325, 200, 200, 15)
-
+ball = GameSprite('ping.png', 550, 325, 75, 75, 3)
+speed_x = 3
+speed_y = 3
 clock = time.Clock()
 FPS = 60
 finish = False
@@ -48,6 +50,15 @@ while game:
         player1.update_i()
         player1.reset() 
         player2.update_r()
-        player2.reset() 
+        player2.reset()
+        ball.reset()
+        ball.rect.x += speed_x
+        ball.rect.y += speed_y
+        if ball.rect.y > 600 or ball.rect.y < 0:
+            speed_y *= -1
+        if ball.rect.x > 1050 or ball.rect.x < 0:
+            speed_y *= -1
+        if sprite.collide_rect(player1, ball) or sprite.collide_rect(player2, ball):
+            speed_x *= -1
     display.update()
     clock.tick(FPS)
