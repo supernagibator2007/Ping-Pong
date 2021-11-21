@@ -32,9 +32,15 @@ window = display.set_mode((1100, 750))
 display.set_caption('PingPong')
 background = transform.scale(image.load('background.png'), (1100, 750))
 
+font.init()
+font = font.SysFont('Arial', 36)
+
 player1 = Player('pong.png', 0, 325, 200, 200, 15)
 player2 = Player('pong.png', 900, 325, 200, 200, 15)
 ball = GameSprite('ping.png', 550, 325, 75, 75, 3)
+
+win = 0
+win1 = 0
 speed_x = 3
 speed_y = 3
 clock = time.Clock()
@@ -54,11 +60,25 @@ while game:
         ball.reset()
         ball.rect.x += speed_x
         ball.rect.y += speed_y
-        if ball.rect.y > 600 or ball.rect.y < 0:
+        score = font.render('Очки первого:' + str(win), True, (255, 0, 0))
+        window.blit(score, (15, 15))
+        score1 = font.render('Очки второго:' + str(win1), True, (255, 0, 0))
+        window.blit(score1, (850, 15))
+        if ball.rect.y > 650 or ball.rect.y < 0:
             speed_y *= -1
-        if ball.rect.x > 1050 or ball.rect.x < 0:
-            speed_y *= -1
-        if sprite.collide_rect(player1, ball) or sprite.collide_rect(player2, ball):
+        if ball.rect.x > 1050:
+            lose = font.render('Проиграл второй', True, (255, 0, 0))
+            window.blit(lose, (450, 325))
+            finish = True
+        if ball.rect.x < 0:
+            lose1 = font.render('Проиграл первый', True, (255, 0, 0))
+            window.blit(lose1, (450, 325))
+            finish = True   
+        if sprite.collide_rect(player1, ball):
             speed_x *= -1
+            win += 1
+        if sprite.collide_rect(player2, ball):
+            speed_x *= -1
+            win1 += 1
     display.update()
     clock.tick(FPS)
